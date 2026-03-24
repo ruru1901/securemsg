@@ -9,10 +9,24 @@
 // Rooms auto-cleaned when both peers disconnect.
 // Render.com free tier: always-on, no credit card required.
 
+const http = require('http');
+const https = require('https');
 const WebSocket = require('ws');
 
 const PORT = process.env.PORT || 8080;
-const wss  = new WebSocket.Server({ port: PORT });
+
+// Create a barebones HTTP server for Keep-Alive/Uptime pings
+const server = http.createServer((req, res) => {
+  if (req.url === '/' || req.url === '/ping') {
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    res.end('pong');
+  } else {
+    res.writeHead(404);
+    res.end('Not Found');
+  }
+});
+
+const wss = new WebSocket.Server({ server });
 
 // rooms: Map<roomId, Set<WebSocket>>
 const rooms = new Map();
@@ -82,5 +96,24 @@ setInterval(() => {
   });
 }, 30_000);
 
-console.log(`Signaling server running on port ${PORT}`);
-console.log(`Active rooms: checked every 30s`);
+server.listen(PORT, () => {
+  console.log(`Signaling server running on port ${PORT}`);
+  console.log(`Active rooms: checked every 30s`);
+});
+
+// Keep-Alive Hack: Self-ping every 14 minutes to prevent Render free-tier sleep
+setInterval(() => {
+  // RENDER_EXTERNAL_URL is automatically set by Render
+  const url = process.env.RENDER_EXTERNAL_URL || `http://localhost:${PORT}`;
+  const lib = url.startsWith('https') ? https : http;
+  
+  lib.get(url, (res) => {
+    // Consume response data to free up memory
+    res.on('data', () => {});
+    res.on('end', () => {
+      console.log(`[Keep-Alive] Pinged ${url}, status: ${res.statusCode}`);
+    });
+  }).on('error', (err) => {
+    console.error(`[Keep-Alive] Error pinging ${url}:`, err.message);
+  });
+}, 14 * 60 * 1000); // 14 mins

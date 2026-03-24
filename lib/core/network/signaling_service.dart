@@ -14,9 +14,9 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 // ── Server pool ───────────────────────────────────────────────────────────────
 // TODO: Replace these with your 3 actual Render.com deployment URLs after deploy.
 const _signalingPool = [
-  'wss://securemsg-sig-1.onrender.com',
-  'wss://securemsg-sig-2.onrender.com',
-  'wss://securemsg-sig-3.onrender.com',
+  'https://securemsg.onrender.com',
+  'https://securemsg-rxfo.onrender.com',
+  'https://securemsg-noz7.onrender.com',
 ];
 
 // ── TURN server pool ──────────────────────────────────────────────────────────
