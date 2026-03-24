@@ -1,0 +1,39 @@
+name: securemsg
+description: Privacy-first P2P encrypted messenger
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.3.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  sodium_libs: ^2.1.0
+  flutter_webrtc: ^1.4.0
+  flutter_secure_storage: ^9.2.2
+  drift: ^2.19.1
+  sqflite: ^2.3.0
+  path_provider: ^2.1.3
+  path: ^1.9.0
+  qr_flutter: ^4.1.0
+  mobile_scanner: ^3.5.5
+  web_socket_channel: ^3.0.3
+  connectivity_plus: ^6.0.3
+  uuid: ^4.4.0
+  archive: ^3.4.10
+  crypto: ^3.0.3
+  permission_handler: ^11.3.1
+  cupertino_icons: ^1.0.6
+  drift_sqflite: 2.0.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+  drift_dev: ^2.19.1
+  build_runner: ^2.4.9
+
+flutter:
+  uses-material-design: true

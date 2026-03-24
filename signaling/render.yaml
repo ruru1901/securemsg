@@ -1,0 +1,22 @@
+# render.yaml
+# Deploy this to Render.com free tier.
+# Steps:
+#   1. Push the /signaling folder to a GitHub repo
+#   2. Go to render.com → New → Web Service → connect repo
+#   3. Set build command: npm install
+#   4. Set start command: node server.js
+#   5. Select free tier
+#   6. Repeat for 3 separate Render.com accounts (3 GitHub repos)
+#   7. Update _signalingPool in signaling_service.dart with the 3 URLs
+
+services:
+  - type: web
+    name: securemsg-signaling
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: node server.js
+    healthCheckPath: /
+    envVars:
+      - key: PORT
+        value: 10000   # Render.com assigns this automatically
